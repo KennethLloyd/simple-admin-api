@@ -135,13 +135,32 @@ const logOut = async (req, res) => {
   }
 };
 
+/**
+@api {post} /users/logoutAll Log out User on all devices
+@apiVersion 1.0.0
+@apiName LogOutAllDevices
+@apiGroup User
+
+@apiHeaderExample {json} Header-Example:
+{
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE4ZTNjODBlNWNiNzY4NzliZDc2OGMiLCJpYXQiOjE1OTU0NjY2OTZ9.zCJOK_0xANZ917ebDGH3G5oFGMp0OH-Kt5cwWIOyztM"
+}
+
+@apiSuccess {String} message Log out message
+@apiSuccessExample {json} Success-Response:
+HTTP/1.1 200 OK
+{
+    "message": "Logged out all devices successfully!"
+}
+*/
+
 const logOutAllDevices = async (req, res) => {
   try {
     req.user.tokens = [];
 
     await req.user.save();
 
-    res.send({ message: 'Logged out on on all devices' });
+    res.send({ message: 'Logged out all devices successfully!' });
   } catch (e) {
     res.status(500).send({ error: 'Internal Server Error' });
   }
