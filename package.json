@@ -14,7 +14,16 @@
   "apidoc": {
     "title": "API Documentation"
   },
-  "keywords": [],
+  "keywords": [
+    "api",
+    "boilerplate",
+    "express",
+    "jwt",
+    "mongoose",
+    "node",
+    "restful",
+    "simple"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
