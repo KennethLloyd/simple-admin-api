@@ -1,19 +1,24 @@
 {
   "name": "express-mongoose-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple NodeJS Express Boilerplate with Mongoose as ODM",
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=production node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "docs": "./node_modules/.bin/apidoc -i src/controllers -o docs"
   },
   "engines": {
     "node": ">=12.0.0"
+  },
+  "apidoc": {
+    "title": "API Documentation"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "apidoc": "^0.24.0",
     "bcryptjs": "^2.4.3",
     "config": "^3.3.1",
     "cors": "^2.8.5",

@@ -20,6 +20,37 @@ const logIn = async (req, res) => {
   }
 };
 
+/**
+@api {post} /users Register User
+@apiName Register
+@apiGroup User
+
+@apiParamExample {json} Request-Example:
+{
+  "firstName": "Miyeon",
+  "lastName": "Cho",
+  "email": "miyeon@cube.com",
+  "password": "12345aA!"
+}
+
+@apiSuccess {Object} user User details
+@apiSuccess {String} token Auth token
+@apiSuccessExample {json} Success-Response:
+HTTP/1.1 201 Created
+{
+    "user": {
+        "_id": "5f18d3e942e2bd44bcf1dd1f",
+        "firstName": "Miyeon",
+        "lastName": "Cho",
+        "email": "miyeon@cube.com",
+        "createdAt": "2020-07-23T00:03:53.910Z",
+        "updatedAt": "2020-07-23T00:03:53.960Z",
+        "__v": 1
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE4ZDNlOTQyZTJiZDQ0YmNmMWRkMWYiLCJpYXQiOjE1OTU0NjI2MzN9.ksS_P3da-Imj4WfErBK4wiCWZiGlsb2cqYLDv9Ny31E"
+}
+*/
+
 const signUp = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email }).lean();
