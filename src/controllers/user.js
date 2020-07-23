@@ -166,6 +166,35 @@ const logOutAllDevices = async (req, res) => {
   }
 };
 
+/**
+@api {patch} /users/me Update Own Profile
+@apiVersion 1.0.0
+@apiName UpdateProfile
+@apiGroup User
+
+@apiParamExample {json} Request-Example:
+{
+	"firstName": "Minnie",
+	"lastName": "Kim",
+	"email": "minnie@cube.com"
+}
+
+@apiSuccess {Object} user User details
+@apiSuccessExample {json} Success-Response:
+HTTP/1.1 201 Created
+{
+    "user": {
+        "_id": "5f18e3c80e5cb76879bd768c",
+        "firstName": "Minnie",
+        "lastName": "Kim",
+        "email": "minnie@cube.com",
+        "createdAt": "2020-07-23T01:11:36.416Z",
+        "updatedAt": "2020-07-23T01:55:03.615Z",
+        "__v": 9
+    }
+}
+*/
+
 const editProfile = async (req, res) => {
   const allowedUpdates = ['firstName', 'lastName', 'email', 'password'];
   const updates = Object.keys(req.body);
@@ -182,7 +211,7 @@ const editProfile = async (req, res) => {
 
     await req.user.save();
 
-    return res.send(req.user);
+    return res.send({'user': req.user});
   } catch (e) {
     return res.status(500).send({ error: 'Internal Server Error' });
   }
