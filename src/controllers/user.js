@@ -1,5 +1,35 @@
 const { User } = require('../models');
 
+/**
+@api {post} /users/login Log In User
+@apiVersion 1.0.0
+@apiName LogIn
+@apiGroup User
+
+@apiParamExample {json} Request-Example:
+{
+	 "email": "soyeon@cube.com",
+	 "password": "12345aA!"
+}
+
+@apiSuccess {Object} user User details
+@apiSuccess {String} token Auth token
+@apiSuccessExample {json} Success-Response:
+HTTP/1.1 200 OK
+{
+    "user": {
+        "_id": "5f18e3c80e5cb76879bd768c",
+        "firstName": "Soyeon",
+        "lastName": "Jeon",
+        "email": "soyeon@cube.com",
+        "createdAt": "2020-07-23T01:11:36.416Z",
+        "updatedAt": "2020-07-23T01:27:15.894Z",
+        "__v": 3
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE4ZTNjODBlNWNiNzY4NzliZDc2OGMiLCJpYXQiOjE1OTU0Njc2MzV9.w2W6mWbsYjZv9DeGkignvBJHsK3GTsMNJsZMe3t_hpM"
+}
+*/
+
 const logIn = async (req, res) => {
   try {
     const user = await User.findByCredentials(
