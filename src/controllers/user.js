@@ -172,6 +172,11 @@ const logOutAllDevices = async (req, res) => {
 @apiName UpdateProfile
 @apiGroup User
 
+@apiHeaderExample {json} Header-Example:
+{
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE4ZTNjODBlNWNiNzY4NzliZDc2OGMiLCJpYXQiOjE1OTU0NjY2OTZ9.zCJOK_0xANZ917ebDGH3G5oFGMp0OH-Kt5cwWIOyztM"
+}
+
 @apiParamExample {json} Request-Example:
 {
 	"firstName": "Minnie",
@@ -181,7 +186,7 @@ const logOutAllDevices = async (req, res) => {
 
 @apiSuccess {Object} user User details
 @apiSuccessExample {json} Success-Response:
-HTTP/1.1 201 Created
+HTTP/1.1 200 OK
 {
     "user": {
         "_id": "5f18e3c80e5cb76879bd768c",
@@ -217,11 +222,38 @@ const editProfile = async (req, res) => {
   }
 };
 
+/**
+@api {delete} /users/me Delete Own Account
+@apiVersion 1.0.0
+@apiName DeleteProfile
+@apiGroup User
+
+@apiHeaderExample {json} Header-Example:
+{
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE4ZTNjODBlNWNiNzY4NzliZDc2OGMiLCJpYXQiOjE1OTU0NjY2OTZ9.zCJOK_0xANZ917ebDGH3G5oFGMp0OH-Kt5cwWIOyztM"
+}
+
+@apiSuccess {Object} user User details
+@apiSuccessExample {json} Success-Response:
+HTTP/1.1 200 OK
+{
+    "user": {
+        "_id": "5f18d3e942e2bd44bcf1dd1f",
+        "firstName": "Miyeon",
+        "lastName": "Cho",
+        "email": "miyeon@cube.com",
+        "createdAt": "2020-07-23T00:03:53.910Z",
+        "updatedAt": "2020-07-23T01:59:24.117Z",
+        "__v": 4
+    }
+}
+*/
+
 const deleteAccount = async (req, res) => {
   try {
     await req.user.remove();
 
-    res.send(req.user);
+    res.send({'user': req.user});
   } catch (e) {
     res.status(400).send({ error: 'Internal Server Error' });
   }
