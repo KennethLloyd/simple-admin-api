@@ -22,6 +22,7 @@ const logIn = async (req, res) => {
 
 /**
 @api {post} /users Register User
+@apiVersion 1.0.0
 @apiName Register
 @apiGroup User
 
@@ -70,6 +71,25 @@ const signUp = async (req, res) => {
   }
 };
 
+/**
+@api {post} /users/logout Log out User
+@apiVersion 1.0.0
+@apiName LogOut
+@apiGroup User
+
+@apiHeaderExample {json} Header-Example:
+{
+  "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE4ZTNjODBlNWNiNzY4NzliZDc2OGMiLCJpYXQiOjE1OTU0NjY2OTZ9.zCJOK_0xANZ917ebDGH3G5oFGMp0OH-Kt5cwWIOyztM"
+}
+
+@apiSuccess {String} message Log out message
+@apiSuccessExample {json} Success-Response:
+HTTP/1.1 200 OK
+{
+    "message": "Logged out successfully!"
+}
+*/
+
 const logOut = async (req, res) => {
   try {
     // remove the current token from the list of tokens to avoid logging out in other devices
@@ -79,7 +99,7 @@ const logOut = async (req, res) => {
 
     await req.user.save();
 
-    res.send({ message: 'Logged out' });
+    res.send({ message: 'Logged out successfully!' });
   } catch (e) {
     res.status(500).send({ error: 'Internal Server Error' });
   }
