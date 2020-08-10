@@ -59,6 +59,19 @@ const User = sequelize.define(
   },
 );
 
+User.prototype.generateAuthToken = async function () {
+  const user = this;
+  const { id, tokens } = user;
+
+  const token = jwt.sign({ id: id.toString() }, config.get('jwtSecret'));
+  tokens.push(token);
+
+  user.tokens = tokens;
+  await user.save();
+
+  return token;
+};
+
 // // Custom instance function (not arrow fxn since we will use 'this')
 // userSchema.methods.generateAuthToken = async function () {
 //   const user = this;
