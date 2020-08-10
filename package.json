@@ -1,7 +1,7 @@
 {
-  "name": "express-mongoose-api",
+  "name": "express-mysql-api",
   "version": "1.0.0",
-  "description": "Simple NodeJS Express Boilerplate with Mongoose as ODM",
+  "description": "Simple NodeJS Express Boilerplate with Sequelize as ORM",
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=production node src/index.js",
@@ -19,10 +19,11 @@
     "boilerplate",
     "express",
     "jwt",
-    "mongoose",
+    "mysql",
     "node",
     "restful",
-    "simple"
+    "simple",
+    "sequelize"
   ],
   "author": "",
   "license": "ISC",
@@ -34,8 +35,7 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.27.0",
-    "mongodb": "^3.5.8",
-    "mongoose": "^5.9.17",
+    "sequelize": "^6.3.4",
     "validator": "^13.0.0"
   },
   "devDependencies": {
