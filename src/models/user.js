@@ -1,57 +1,63 @@
-// const sequelize = require('../db/sequelize');
-// const validator = require('validator');
-// const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
-// const config = require('config');
+const { Sequelize, DataTypes } = require('sequelize');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const config = require('config');
+const sequelize = require('../db/sequelize');
 
-// const userSchema = new mongoose.Schema(
-//   {
-//     firstName: {
-//       type: String,
-//       required: false,
-//       trim: true,
-//     },
-//     lastName: {
-//       type: String,
-//       required: false,
-//       trim: true,
-//     },
-//     email: {
-//       type: String,
-//       unique: true,
-//       required: true,
-//       trim: true,
-//       lowercase: true,
-//       validate(value) {
-//         if (!validator.isEmail(value)) {
-//           throw new Error('Email is invalid');
-//         }
-//       },
-//     },
-//     password: {
-//       type: String,
-//       required: true,
-//       trim: true,
-//       minlength: 7,
-//       validate(value) {
-//         if (value.toLowerCase().includes('password')) {
-//           throw new Error('Password not secure');
-//         }
-//       },
-//     },
-//     tokens: [
-//       {
-//         token: {
-//           type: String,
-//           required: true,
-//         },
-//       },
-//     ],
-//   },
-//   {
-//     timestamps: true, // adds createdAt and updatedAt for each new entry
-//   },
-// );
+const User = sequelize.define(
+  'User',
+  {
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      set(value) {
+        this.setDataValue('firstName', value.trim());
+      },
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      set(value) {
+        this.setDataValue('lastName', value.trim());
+      },
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      set(value) {
+        this.setDataValue('email', value.trim().toLowerCase());
+      },
+      validate: {
+        isEmail: true,
+      },
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      async set(value) {
+        this.setDataValue('password', await bcrypt.hash(value.trim(), 8));
+      },
+    },
+    tokens: {
+      type: DataTypes.STRING,
+      get() {
+        return this.getDataValue('tokens').split(',');
+      },
+      set(value) {
+        this.setDataValue('tokens', value.join());
+      },
+    },
+  },
+  {
+    timestamps: true, // adds createdAt and updatedAt for each new entry
+  },
+);
 
 // // Custom instance function (not arrow fxn since we will use 'this')
 // userSchema.methods.generateAuthToken = async function () {
@@ -103,6 +109,4 @@
 //   next();
 // });
 
-// const User = mongoose.model('User', userSchema);
-
-// module.exports = User;
+module.exports = User;
