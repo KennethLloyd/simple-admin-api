@@ -1,4 +1,6 @@
 {
-  "mongoURI": "mongodb://127.0.0.1:27017/express-mongoose-api",
-  "jwtSecret": "express-mongoose-api-secret"
+  "dbURI": "mariadb://localhost:3306/express_mariadb_api",
+  "dbUser": "root",
+  "dbPassword": "admin",
+  "jwtSecret": "express-mariadb-api-secret"
 }

@@ -1,4 +1,6 @@
 {
-  "mongoURI": "", //mongodb+srv://username:password@cluster/db
-  "jwtSecret": "" //your secret
+  "dbURI": "",
+  "dbUser": "",
+  "dbPassword": "",
+  "jwtSecret": ""
 }
