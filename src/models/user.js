@@ -72,18 +72,6 @@ User.prototype.generateAuthToken = async function () {
   return token;
 };
 
-// // Custom instance function (not arrow fxn since we will use 'this')
-// userSchema.methods.generateAuthToken = async function () {
-//   const user = this;
-
-//   const token = jwt.sign({ _id: user._id.toString() }, config.get('jwtSecret'));
-
-//   user.tokens = [...user.tokens, { token }]; // add token object to array of objects of tokens
-//   await user.save();
-
-//   return token;
-// };
-
 // userSchema.methods.toJSON = function () {
 //   const user = this;
 //   const userObject = user.toObject(); // get raw data without mongoose data and fxns for saving

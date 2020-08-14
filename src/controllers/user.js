@@ -216,7 +216,7 @@ const editProfile = async (req, res) => {
 
     await req.user.save();
 
-    return res.send({'user': req.user});
+    return res.send({ user: req.user });
   } catch (e) {
     return res.status(500).send({ error: 'Internal Server Error' });
   }
@@ -253,7 +253,7 @@ const deleteAccount = async (req, res) => {
   try {
     await req.user.remove();
 
-    res.send({'user': req.user});
+    res.send({ user: req.user });
   } catch (e) {
     res.status(400).send({ error: 'Internal Server Error' });
   }
