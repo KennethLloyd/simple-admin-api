@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
@@ -72,42 +72,35 @@ User.prototype.generateAuthToken = async function () {
   return token;
 };
 
-// userSchema.methods.toJSON = function () {
-//   const user = this;
-//   const userObject = user.toObject(); // get raw data without mongoose data and fxns for saving
+// removes confidential values when getting the user
+User.prototype.toJSON = function () {
+  const user = this;
 
-//   // cannot do this in mongoose instance
-//   delete userObject.password;
-//   delete userObject.tokens;
+  delete user.password;
+  delete user.tokens;
 
-//   return userObject;
-// };
+  return user;
+};
 
-// // Custom model function
-// userSchema.statics.findByCredentials = async (email, password) => {
-//   const user = await User.findOne({ email });
+User.findByCredentials = async (email, password) => {
+  const user = await User.findOne({ where: { email } });
 
-//   if (!user) {
-//     return null;
-//   }
+  if (!user) {
+    return null;
+  }
 
-//   const isMatch = await bcrypt.compare(password, user.password);
+  const isMatch = await bcrypt.compare(password, user.password);
 
-//   if (!isMatch) {
-//     return null;
-//   }
-//   return user;
-// };
+  if (!isMatch) {
+    return null;
+  }
+  return user;
+};
 
-// // Hash plain text password before saving
-// userSchema.pre('save', async function (next) {
-//   const user = this;
-
-//   if (user.isModified('password')) {
-//     user.password = await bcrypt.hash(user.password, 8);
-//   }
-
-//   next();
-// });
+User.beforeSave(async (userInstance) => {
+  if (userInstance.changed('password')) {
+    userInstance.password = await bcrypt.hash(userInstance.password, 8);
+  }
+});
 
 module.exports = User;
