@@ -40,14 +40,14 @@ const User = sequelize.define(
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      async set(value) {
-        this.setDataValue('password', await bcrypt.hash(value.trim(), 8));
-      },
     },
     tokens: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       get() {
-        return this.getDataValue('tokens').split(',');
+        if (this.getDataValue('tokens')) {
+          return this.getDataValue('tokens').split(',');
+        }
+        return [];
       },
       set(value) {
         this.setDataValue('tokens', value.join());
@@ -70,16 +70,6 @@ User.prototype.generateAuthToken = async function () {
   await user.save();
 
   return token;
-};
-
-// removes confidential values when getting the user
-User.prototype.toJSON = function () {
-  const user = this;
-
-  delete user.password;
-  delete user.tokens;
-
-  return user;
 };
 
 User.findByCredentials = async (email, password) => {

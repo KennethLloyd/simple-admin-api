@@ -18,15 +18,14 @@ const { User } = require('../models');
 HTTP/1.1 200 OK
 {
     "user": {
-        "_id": "5f18e3c80e5cb76879bd768c",
+        "id": "89193b8f-a62f-4d31-9e47-cb44b2dd3f5f",
         "firstName": "Soyeon",
         "lastName": "Jeon",
         "email": "soyeon@cube.com",
-        "createdAt": "2020-07-23T01:11:36.416Z",
-        "updatedAt": "2020-07-23T01:27:15.894Z",
-        "__v": 3
+        "createdAt": "2020-08-15T11:55:57.000Z",
+        "updatedAt": "2020-08-15T12:06:08.595Z"
     },
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE4ZTNjODBlNWNiNzY4NzliZDc2OGMiLCJpYXQiOjE1OTU0Njc2MzV9.w2W6mWbsYjZv9DeGkignvBJHsK3GTsMNJsZMe3t_hpM"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg5MTkzYjhmLWE2MmYtNGQzMS05ZTQ3LWNiNDRiMmRkM2Y1ZiIsImlhdCI6MTU5NzQ5MzE2OH0.Kj6zdkvhD0_7Bb9dvnJr9oK3pu5mbO-_4JokBQC9BlU"
 }
 */
 
@@ -43,7 +42,11 @@ const logIn = async (req, res) => {
 
     const token = await user.generateAuthToken();
 
-    return res.send({ user, token });
+    const authUser = user.dataValues;
+    delete authUser.password;
+    delete authUser.tokens;
+
+    return res.send({ user: authUser, token });
   } catch (e) {
     console.log(e);
     return res.status(500).send({ error: 'Internal Server Error' });
@@ -70,21 +73,20 @@ const logIn = async (req, res) => {
 HTTP/1.1 201 Created
 {
     "user": {
-        "_id": "5f18d3e942e2bd44bcf1dd1f",
+        "id": "218c2c56-0035-4819-bebb-ec9c11afb447",
         "firstName": "Miyeon",
         "lastName": "Cho",
         "email": "miyeon@cube.com",
-        "createdAt": "2020-07-23T00:03:53.910Z",
-        "updatedAt": "2020-07-23T00:03:53.960Z",
-        "__v": 1
+        "updatedAt": "2020-08-15T12:08:14.989Z",
+        "createdAt": "2020-08-15T12:08:14.963Z"
     },
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjE4ZDNlOTQyZTJiZDQ0YmNmMWRkMWYiLCJpYXQiOjE1OTU0NjI2MzN9.ksS_P3da-Imj4WfErBK4wiCWZiGlsb2cqYLDv9Ny31E"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIxOGMyYzU2LTAwMzUtNDgxOS1iZWJiLWVjOWMxMWFmYjQ0NyIsImlhdCI6MTU5NzQ5MzI5NH0.6Zb9UbuQGJiqxiuXTm-31Q1KqqgNIOzYjQtUNMh1IyM"
 }
 */
 
 const signUp = async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.body.email }).lean();
+    const user = await User.findOne({ where: { email: req.body.email } });
 
     if (user) {
       return res.status(400).send({ error: 'Email already exists' });
@@ -93,10 +95,16 @@ const signUp = async (req, res) => {
     const newUser = new User(req.body);
 
     await newUser.save();
+
     const token = await newUser.generateAuthToken();
 
-    return res.status(201).send({ user: newUser, token });
+    const authUser = newUser.dataValues;
+    delete authUser.password;
+    delete authUser.tokens;
+
+    return res.status(201).send({ user: authUser, token });
   } catch (e) {
+    console.log(e);
     return res.status(500).send({ error: 'Internal Server Error' });
   }
 };
