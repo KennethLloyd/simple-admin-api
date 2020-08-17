@@ -1,4 +1,5 @@
 const { User } = require('../models');
+const { formatUser } = require('../helpers/utils');
 
 /**
 @api {post} /users/login Log In User
@@ -42,11 +43,7 @@ const logIn = async (req, res) => {
 
     const token = await user.generateAuthToken();
 
-    const authUser = user.dataValues;
-    delete authUser.password;
-    delete authUser.tokens;
-
-    return res.send({ user: authUser, token });
+    return res.send({ user: formatUser(user), token });
   } catch (e) {
     console.log(e);
     return res.status(500).send({ error: 'Internal Server Error' });
@@ -98,11 +95,7 @@ const signUp = async (req, res) => {
 
     const token = await newUser.generateAuthToken();
 
-    const authUser = newUser.dataValues;
-    delete authUser.password;
-    delete authUser.tokens;
-
-    return res.status(201).send({ user: authUser, token });
+    return res.status(201).send({ user: formatUser(newUser), token });
   } catch (e) {
     console.log(e);
     return res.status(500).send({ error: 'Internal Server Error' });
@@ -141,7 +134,7 @@ const logOut = async (req, res) => {
   }
 };
 
-/**
+/** 
 @api {post} /users/logoutAll Log out User on all devices
 @apiVersion 1.0.0
 @apiName LogOutAllDevices
@@ -185,9 +178,8 @@ const logOutAllDevices = async (req, res) => {
 
 @apiParamExample {json} Request-Example:
 {
-	"firstName": "Minnie",
-	"lastName": "Kim",
-	"email": "minnie@cube.com"
+	"firstName": "Nicha",
+	"lastName": "Yontararak"
 }
 
 @apiSuccess {Object} user User details
@@ -195,13 +187,12 @@ const logOutAllDevices = async (req, res) => {
 HTTP/1.1 200 OK
 {
     "user": {
-        "_id": "5f18e3c80e5cb76879bd768c",
-        "firstName": "Minnie",
-        "lastName": "Kim",
+        "id": "8363ef66-2e60-4991-8f80-1a4e05b03548",
+        "firstName": "Nicha",
+        "lastName": "Yontararak",
         "email": "minnie@cube.com",
-        "createdAt": "2020-07-23T01:11:36.416Z",
-        "updatedAt": "2020-07-23T01:55:03.615Z",
-        "__v": 9
+        "createdAt": "2020-08-17T11:15:19.000Z",
+        "updatedAt": "2020-08-17T11:19:26.306Z"
     }
 }
 */
@@ -209,9 +200,10 @@ HTTP/1.1 200 OK
 const editProfile = async (req, res) => {
   const allowedUpdates = ['firstName', 'lastName', 'email', 'password'];
   const updates = Object.keys(req.body);
+
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update),
-  );
+  ); // only returns true if all conditions are satisfied
 
   if (!isValidOperation) {
     return res.status(400).send({ error: 'Invalid updates' });
@@ -222,7 +214,7 @@ const editProfile = async (req, res) => {
 
     await req.user.save();
 
-    return res.send({ user: req.user });
+    return res.send({ user: formatUser(req.user) });
   } catch (e) {
     return res.status(500).send({ error: 'Internal Server Error' });
   }
