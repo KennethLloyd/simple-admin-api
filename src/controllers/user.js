@@ -131,9 +131,7 @@ HTTP/1.1 200 OK
 const logOut = async (req, res) => {
   try {
     // remove the current token from the list of tokens to avoid logging out in other devices
-    req.user.tokens = req.user.tokens.filter(
-      (token) => token.token !== req.token,
-    );
+    req.user.tokens = req.user.tokens.filter((token) => token !== req.token);
 
     await req.user.save();
 
