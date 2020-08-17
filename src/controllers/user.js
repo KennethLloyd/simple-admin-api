@@ -236,13 +236,12 @@ const editProfile = async (req, res) => {
 HTTP/1.1 200 OK
 {
     "user": {
-        "_id": "5f18d3e942e2bd44bcf1dd1f",
-        "firstName": "Miyeon",
-        "lastName": "Cho",
-        "email": "miyeon@cube.com",
+        "id": "3b42c1cd-7a6a-4f3f-8922-d8ae68a9bf10",
+        "firstName": "Yuqi",
+        "lastName": "Song",
+        "email": "yuqi@cube.com",
         "createdAt": "2020-07-23T00:03:53.910Z",
         "updatedAt": "2020-07-23T01:59:24.117Z",
-        "__v": 4
     }
 }
 */
