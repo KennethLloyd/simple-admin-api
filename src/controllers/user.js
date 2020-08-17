@@ -249,9 +249,9 @@ HTTP/1.1 200 OK
 
 const deleteAccount = async (req, res) => {
   try {
-    await req.user.remove();
+    await req.user.destroy();
 
-    res.send({ user: req.user });
+    res.send({ user: formatUser(req.user) });
   } catch (e) {
     res.status(400).send({ error: 'Internal Server Error' });
   }
