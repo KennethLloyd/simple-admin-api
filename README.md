@@ -1,6 +1,6 @@
-# express-mariadb-api
+# simple-admin-api
 
-Simple NodeJS Express App with Sequelize as ORM
+Express API for React Admin web applications
 
 1. Install dependencies
 
