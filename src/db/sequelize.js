@@ -7,6 +7,7 @@ const sequelize = new Sequelize(config.get('dbURI'), {
   dialectOptions: {
     timezone: 'Etc/GMT+8',
   },
+  logging: false,
 });
 
 module.exports = sequelize;

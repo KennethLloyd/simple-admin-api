@@ -1,5 +1,5 @@
 {
-  "dbURI": "mariadb://localhost:3306/express_mariadb_api",
+  "dbURI": "mariadb://localhost:3306/test_admin",
   "dbUser": "root",
   "dbPassword": "admin",
   "jwtSecret": "express-mariadb-api-secret"

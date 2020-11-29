@@ -4,7 +4,7 @@ const path = require('path');
 const sequelize = require('./db/sequelize');
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 4000;
 
 app.use(express.json()); // allows us to parse the request as json
 app.use(cors());
@@ -15,7 +15,7 @@ require('./routers')(app);
 (async () => {
   try {
     await sequelize.authenticate();
-    // await sequelize.sync({ alter: true }); // update schema
+    await sequelize.sync({ alter: true }); // update schema
     console.log('Connection to database has been established successfully');
   } catch (error) {
     console.error('Unable to connect to the database:', error);

@@ -1,20 +1,14 @@
 const jwt = require('jsonwebtoken');
 const config = require('config');
-const { Sequelize } = require('sequelize');
 const { User } = require('../models');
 
 const authenticate = async (req, res, next) => {
-  const { Op } = Sequelize;
-
   try {
     const token = req.header('Authorization').replace('Bearer ', '');
     const decoded = jwt.verify(token, config.get('jwtSecret'));
     const user = await User.findOne({
       where: {
         id: decoded.id,
-        tokens: {
-          [Op.like]: `%${token}%`,
-        },
       },
     });
 
